@@ -13,5 +13,5 @@ cd backend
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r .\requirements.txt
-cd .\backend\
+cd .\backend\app
 uvicorn main:app --reload

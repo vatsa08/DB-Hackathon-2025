@@ -2,11 +2,13 @@ from chromadb import Client
 from chromadb.config import Settings
 from vertexai.language_models import ChatModel
 # from google.colab import auth
-# from vertexai import init
+from vertexai import init
 
-# init(project="flowing-design-466913-e5", location="us-central1")
+init(project="flowing-design-466913-e5", location="us-central1")
 from google import genai
 from google.genai import types
+
+from embedder import get_context
 llm = genai.Client(
 vertexai=True, project="flowing-design-466913-e5", location="global",
 )
@@ -19,21 +21,24 @@ client = Client(Settings(persist_directory="chroma_db"))
 collection = client.get_or_create_collection(name="biz_docs")
 
 # Init Gemini model
-chat_model = ChatModel.from_pretrained("chat-bison@001")  # or "gemini-1.5-pro-preview"
+chat_model = ChatModel.from_pretrained("gemini-1.0-pro")  # or "gemini-1.5-pro-preview"
 chat = chat_model.start_chat()
 
 def retrieve_context(query):
     results = collection.query(query_texts=[query], n_results=3)
     return "\n".join(results['documents'][0]) if results['documents'] else ""
 
-def generate_response(query, profile):
-    # context = retrieve_context(query)
+def generate_response(business,query, profile):
+    context = get_context(business)
 
     prompt = f"""
 You are a business advisor specialized in Indian Retail.
 
 User Profile:
 {profile}
+
+Business Context
+{context}
 
 User Query:
 {query}

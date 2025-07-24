@@ -414,13 +414,10 @@ const BizBoostHub = () => {
 
   // Gemini AI Integration
   const sendToGemini = async (message) => {
-    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
-      // Fallback to mock responses if no API key
-      return getMockResponse(message);
-    }
 
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+      console.log("LOG Sending message")
+      const response = await fetch(`http://127.0.0.1:8000/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -428,15 +425,18 @@ const BizBoostHub = () => {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `You are a financial advisor for ${currentBusiness.name}, a ${currentBusiness.type} business with ${currentBusiness.employees} employees, $${currentBusiness.currentCash.toLocaleString()} current cash, and $${currentBusiness.monthlyRevenue.toLocaleString()} monthly revenue. Provide specific, actionable financial advice. User question: ${message}`
+              business:currentScenario,
+              profile: `You are a financial advisor for ${currentBusiness.name}, a ${currentBusiness.type} business with ${currentBusiness.employees} employees, $${currentBusiness.currentCash.toLocaleString()} current cash, and $${currentBusiness.monthlyRevenue.toLocaleString()} monthly revenue. Provide specific, actionable financial advice.`,
+              query:`User question: ${message}`
             }]
           }]
         })
       });
-
       const data = await response.json();
-      return data.candidates[0].content.parts[0].text;
+      console.log("LOG Gemini response", data['answer']['text']);
+      return data['answer']['text']
     } catch (error) {
+      console.log("Log ",error)
       console.error('Gemini API error:', error);
       return getMockResponse(message);
     }
@@ -694,7 +694,7 @@ For questions, contact: support@bizboosthub.com
               <Tooltip
                 formatter={(value, name) => [
                   `${value?.toLocaleString()}`,
-                  name === 'actual' ? 'Actual Cash Flow' : 'AI Predicted Cash Flow'
+                  name === 'Actual' ? 'Actual Cash Flow' : 'AI Predicted Cash Flow'
                 ]}
               />
               <Line
