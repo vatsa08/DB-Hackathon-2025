@@ -1,0 +1,15 @@
+requests 
+beautifulsoup4 
+newspaper3k 
+tqdm
+chromadb 
+sentence-transformers
+fastapi 
+uvicorn 
+instructor 
+pydantic 
+unstructured 
+duckdb
+onnxruntime
+google-cloud-aiplatform
+
