@@ -1,12 +1,130 @@
-[
-  {
-    "title": "Retail Profitability Tips",
-    "content": "Reduce overhead costs by negotiating supplier contracts. Use foot traffic heatmaps to optimize layout.",
-    "tags": ["retail", "cost", "profit"]
+{
+  "sarah": {
+    "name": "Sarah's Restaurant",
+    "type": "Restaurant",
+    "region": "Mumbai, India",
+    "context": "Sarah owns a bustling restaurant in Bandra, Mumbai. Her business sees seasonal spikes during Diwali and New Year, but she faces rising ingredient costs and high urban rent.",
+    "monthlyData": {
+      "2023": {
+        "January": {
+          "revenue": 45000,
+          "expenses": 39000,
+          "profit": 6000,
+          "customerSegments": {
+            "workingProfessionals": 60,
+            "families": 30,
+            "tourists": 10
+          },
+          "notes": "New Year menu promotions successful."
+        },
+        "February": {
+          "revenue": 46000,
+          "expenses": 40000,
+          "profit": 6000,
+          "customerSegments": {
+            "workingProfessionals": 55,
+            "families": 35,
+            "tourists": 10
+          },
+          "notes": "Valentine’s Day boost in bookings."
+        },
+        "March": {
+          "revenue": 48000,
+          "expenses": 41000,
+          "profit": 7000,
+          "customerSegments": {
+            "workingProfessionals": 50,
+            "families": 40,
+            "tourists": 10
+          },
+          "notes": "Staff bonuses and Holi celebration menu increased costs."
+        }
+      }
+    }
   },
-  {
-    "title": "SaaS Pricing Strategy",
-    "content": "For early-stage SaaS, use value-based pricing. Offer a free tier to gather data.",
-    "tags": ["saas", "pricing", "startup"]
+
+  "mike": {
+    "name": "Mike's Tech Startup",
+    "type": "Technology",
+    "region": "Bangalore, India",
+    "context": "Mike operates a SaaS startup targeting SMEs. He recently launched a generative AI dashboard and is expanding into international markets, facing currency fluctuation risks.",
+    "monthlyData": {
+      "2023": {
+        "January": {
+          "revenue": 42000,
+          "expenses": 30000,
+          "profit": 12000,
+          "customerSegments": {
+            "domesticSMEs": 65,
+            "internationalClients": 35
+          },
+          "notes": "Closed first international client."
+        },
+        "February": {
+          "revenue": 45000,
+          "expenses": 31000,
+          "profit": 14000,
+          "customerSegments": {
+            "domesticSMEs": 60,
+            "internationalClients": 40
+          },
+          "notes": "Increased cloud infra spend due to feature rollout."
+        },
+        "March": {
+          "revenue": 48000,
+          "expenses": 32000,
+          "profit": 16000,
+          "customerSegments": {
+            "domesticSMEs": 55,
+            "internationalClients": 45
+          },
+          "notes": "Added subscription billing system."
+        }
+      }
+    }
+  },
+
+  "lisa": {
+    "name": "Lisa's Retail Store",
+    "type": "Retail",
+    "region": "Pune, India",
+    "context": "Lisa owns a boutique store in Pune. Her ethnic wear sells well during Gudi Padwa and wedding season, but stock management and offline-to-online transition are challenges.",
+    "monthlyData": {
+      "2023": {
+        "January": {
+          "revenue": 28000,
+          "expenses": 23000,
+          "profit": 5000,
+          "customerSegments": {
+            "students": 45,
+            "workingWomen": 50,
+            "others": 5
+          },
+          "notes": "Winter sale attracted younger crowd."
+        },
+        "February": {
+          "revenue": 29000,
+          "expenses": 24000,
+          "profit": 5000,
+          "customerSegments": {
+            "students": 40,
+            "workingWomen": 55,
+            "others": 5
+          },
+          "notes": "Campaign on Instagram for Valentine's collection."
+        },
+        "March": {
+          "revenue": 30000,
+          "expenses": 26000,
+          "profit": 4000,
+          "customerSegments": {
+            "students": 38,
+            "workingWomen": 57,
+            "others": 5
+          },
+          "notes": "Pre-Gudi Padwa prep; ordered bulk ethnic stock."
+        }
+      }
+    }
   }
-]
+}
