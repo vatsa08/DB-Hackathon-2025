@@ -2,6 +2,78 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, DollarSign, Target, FileText, Bell, MessageCircle, Search, Download, Award, AlertTriangle, CheckCircle, Clock, Users, Building, Zap, ChevronDown, ChevronUp, Send } from 'lucide-react';
 
+// Moved ChatbotWidget definition outside BizBoostHub
+// It now accepts props for all values it needs from BizBoostHub
+const ChatbotWidget = ({
+  showChatbot,
+  setShowChatbot,
+  chatMessages,
+  chatInput,
+  setChatInput,
+  isTyping,
+  handleSendMessage
+}) => (
+    <div className={`fixed bottom-6 right-6 transition-all duration-300 z-50 ${showChatbot ? 'w-80 h-96' : 'w-16 h-16'}`}>
+      {showChatbot ? (
+        <div className="bg-white rounded-lg shadow-2xl border flex flex-col h-full">
+          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex items-center justify-between">
+            <h4 className="font-semibold">AI Business Advisor</h4>
+            <button
+              onClick={() => setShowChatbot(false)}
+              className="text-white hover:text-gray-200"
+            >
+              ×
+            </button>
+          </div>
+          <div className="flex-1 p-4 overflow-y-auto">
+            <div className="space-y-3">
+              {chatMessages.map((message) => (
+                <div key={message.id} className={`${message.isBot ? 'bg-gray-100' : 'bg-blue-100 ml-8'} rounded-lg p-3`}>
+                  <p className="text-sm">{message.text}</p>
+                </div>
+              ))}
+              {isTyping && (
+                <div className="bg-gray-100 rounded-lg p-3">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="p-4 border-t">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Ask me anything..."
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                className="flex-1 px-3 py-2 border rounded-lg text-sm"
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={!chatInput.trim() || isTyping}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setShowChatbot(true)}
+          className="w-16 h-16 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+        >
+          <MessageCircle className="h-8 w-8" />
+        </button>
+      )}
+    </div>
+  );
+
 const BizBoostHub = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showChatbot, setShowChatbot] = useState(false);
@@ -398,7 +470,7 @@ const BizBoostHub = () => {
 
     try {
       const response = await sendToGemini(chatInput);
-      
+
       setTimeout(() => {
         const botMessage = {
           id: Date.now() + 1,
@@ -441,23 +513,23 @@ Employees: ${currentBusiness.employees}
 =================================
 KEY METRICS
 =================================
-${currentBusiness.benchmarkData.map(metric => 
-  `${metric.metric}: ${metric.value} (Industry Avg: ${metric.benchmark})`
-).join('\n')}
+${currentBusiness.benchmarkData.map(metric =>
+        `${metric.metric}: ${metric.value} (Industry Avg: ${metric.benchmark})`
+      ).join('\n')}
 
 =================================
 CASH FLOW PROJECTION (90 DAYS)
 =================================
-${currentBusiness.cashFlowData.filter(d => d.predicted).map(d => 
-  `${d.month}: $${d.predicted?.toLocaleString() || 'N/A'}`
-).join('\n')}
+${currentBusiness.cashFlowData.filter(d => d.predicted).map(d =>
+        `${d.month}: $${d.predicted?.toLocaleString() || 'N/A'}`
+      ).join('\n')}
 
 =================================
 EXPENSE BREAKDOWN
 =================================
-${currentBusiness.expenseData.map(expense => 
-  `${expense.name}: ${expense.value}%`
-).join('\n')}
+${currentBusiness.expenseData.map(expense =>
+        `${expense.name}: ${expense.value}%`
+      ).join('\n')}
 
 =================================
 RECOMMENDATIONS
@@ -471,9 +543,9 @@ RECOMMENDATIONS
 =================================
 FUNDING OPPORTUNITIES
 =================================
-${fundingOpportunities.map(opp => 
-  `${opp.title}: ${opp.amount} (Match: ${opp.match})`
-).join('\n')}
+${fundingOpportunities.map(opp =>
+        `${opp.title}: ${opp.amount} (Match: ${opp.match})`
+      ).join('\n')}
 
 This report was generated by BizBoost Hub AI Financial Toolkit.
 For questions, contact: support@bizboosthub.com
@@ -489,7 +561,7 @@ For questions, contact: support@bizboosthub.com
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      
+
       setLoading(false);
     }, 2000);
   };
@@ -598,7 +670,7 @@ For questions, contact: support@bizboosthub.com
             AI Powered
           </div>
         </div>
-        
+
         {/* Legend */}
         <div className="flex items-center justify-center gap-6 mb-4 p-3 bg-gray-50 rounded-lg">
           <div className="flex items-center gap-2">
@@ -619,26 +691,26 @@ For questions, contact: support@bizboosthub.com
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis />
-              <Tooltip 
+              <Tooltip
                 formatter={(value, name) => [
-                  `${value?.toLocaleString()}`, 
+                  `${value?.toLocaleString()}`,
                   name === 'actual' ? 'Actual Cash Flow' : 'AI Predicted Cash Flow'
-                ]} 
+                ]}
               />
-              <Line 
-                type="monotone" 
-                dataKey="actual" 
-                stroke="#3b82f6" 
-                strokeWidth={3} 
+              <Line
+                type="monotone"
+                dataKey="actual"
+                stroke="#3b82f6"
+                strokeWidth={3}
                 name="Actual"
                 dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
               />
-              <Line 
-                type="monotone" 
-                dataKey="predicted" 
-                stroke="#10b981" 
-                strokeWidth={3} 
-                strokeDasharray="8 4" 
+              <Line
+                type="monotone"
+                dataKey="predicted"
+                stroke="#10b981"
+                strokeWidth={3}
+                strokeDasharray="8 4"
                 name="AI Predicted"
                 dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
               />
@@ -720,7 +792,7 @@ For questions, contact: support@bizboosthub.com
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold">AI Grant Matching Engine</h3>
-          <button 
+          <button
             onClick={shuffleFunding}
             disabled={loading}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
@@ -728,7 +800,7 @@ For questions, contact: support@bizboosthub.com
             {loading ? 'Scanning...' : 'Scan for New Opportunities'}
           </button>
         </div>
-        
+
         {loading && (
           <div className="mb-6 p-4 bg-blue-50 rounded-lg">
             <div className="flex items-center gap-3">
@@ -737,7 +809,7 @@ For questions, contact: support@bizboosthub.com
             </div>
           </div>
         )}
-        
+
         <div className="grid gap-6">
           {fundingOpportunities.map((opportunity) => (
             <div key={opportunity.id} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
@@ -747,16 +819,16 @@ For questions, contact: support@bizboosthub.com
                     <h4 className="font-semibold text-lg">{opportunity.title}</h4>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       appliedOpportunities.has(opportunity.id) ? 'bg-green-100 text-green-800' :
-                      opportunity.status === 'eligible' ? 'bg-green-100 text-green-800' :
-                      opportunity.status === 'applying' ? 'bg-blue-100 text-blue-800' :
-                      'bg-yellow-100 text-yellow-800'
-                    }`}>
+                        opportunity.status === 'eligible' ? 'bg-green-100 text-green-800' :
+                          opportunity.status === 'applying' ? 'bg-blue-100 text-blue-800' :
+                            'bg-yellow-100 text-yellow-800'
+                      }`}>
                       {appliedOpportunities.has(opportunity.id) ? 'Applied' :
-                       opportunity.status === 'eligible' ? 'Eligible' :
-                       opportunity.status === 'applying' ? 'In Progress' : 'Under Review'}
+                        opportunity.status === 'eligible' ? 'Eligible' :
+                          opportunity.status === 'applying' ? 'In Progress' : 'Under Review'}
                     </span>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     <div>
                       <p className="text-sm text-gray-600">Deadline</p>
@@ -773,10 +845,10 @@ For questions, contact: support@bizboosthub.com
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex gap-3 mt-4">
                 {opportunity.status === 'eligible' && !appliedOpportunities.has(opportunity.id) && (
-                  <button 
+                  <button
                     onClick={() => handleApply(opportunity.id)}
                     className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                   >
@@ -788,7 +860,7 @@ For questions, contact: support@bizboosthub.com
                     Applied ✓
                   </button>
                 )}
-                <button 
+                <button
                   onClick={() => toggleDetails(opportunity.id)}
                   className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
                 >
@@ -830,7 +902,7 @@ For questions, contact: support@bizboosthub.com
     <div className="space-y-6">
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-6">One-Click Financial Reports</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="border rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
@@ -843,10 +915,10 @@ For questions, contact: support@bizboosthub.com
             <ul className="text-sm text-gray-600 mb-4 space-y-1">
               <li>• Revenue projections</li>
               <li>• Cash flow analysis</li>
-              <li>• Growth metrics</li>
+              <li>•• Growth metrics</li>
               <li>• Risk assessment</li>
             </ul>
-            <button 
+            <button
               onClick={generatePDFReport}
               disabled={loading}
               className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
@@ -869,7 +941,7 @@ For questions, contact: support@bizboosthub.com
               <li>• Goal progress</li>
               <li>• Recommendations</li>
             </ul>
-            <button 
+            <button
               onClick={generateSummary}
               className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
@@ -989,7 +1061,7 @@ For questions, contact: support@bizboosthub.com
       {/* Active Alerts */}
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-6">Active Alerts & Recommendations</h3>
-        
+
         {activeAlerts.length === 0 ? (
           <div className="text-center py-8">
             <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
@@ -1001,17 +1073,17 @@ For questions, contact: support@bizboosthub.com
             {activeAlerts.map((alert) => (
               <div key={alert.id} className={`border rounded-lg p-6 ${
                 alert.type === 'critical' ? 'border-red-200 bg-red-50' :
-                alert.type === 'warning' ? 'border-yellow-200 bg-yellow-50' :
-                'border-green-200 bg-green-50'
-              }`}>
+                  alert.type === 'warning' ? 'border-yellow-200 bg-yellow-50' :
+                    'border-green-200 bg-green-50'
+                }`}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <div className={`p-2 rounded-full ${
                         alert.type === 'critical' ? 'bg-red-100' :
-                        alert.type === 'warning' ? 'bg-yellow-100' :
-                        'bg-green-100'
-                      }`}>
+                          alert.type === 'warning' ? 'bg-yellow-100' :
+                            'bg-green-100'
+                        }`}>
                         {alert.type === 'critical' ? (
                           <AlertTriangle className="h-5 w-5 text-red-600" />
                         ) : (
@@ -1021,15 +1093,15 @@ For questions, contact: support@bizboosthub.com
                       <div>
                         <h4 className={`font-semibold ${
                           alert.type === 'critical' ? 'text-red-800' :
-                          'text-yellow-800'
-                        }`}>{alert.title}</h4>
+                            'text-yellow-800'
+                          }`}>{alert.title}</h4>
                         <p className={`text-sm ${
                           alert.type === 'critical' ? 'text-red-700' :
-                          'text-yellow-700'
-                        }`}>{alert.description}</p>
+                            'text-yellow-700'
+                          }`}>{alert.description}</p>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                       <div>
                         <p className="text-xs font-medium text-gray-600">Impact Level</p>
@@ -1045,7 +1117,7 @@ For questions, contact: support@bizboosthub.com
                       </div>
                     </div>
                   </div>
-                  
+
                   <button
                     onClick={() => dismissAlert(alert.id)}
                     className="text-gray-400 hover:text-gray-600 ml-4"
@@ -1053,7 +1125,7 @@ For questions, contact: support@bizboosthub.com
                     ×
                   </button>
                 </div>
-                
+
                 <div className="border-t pt-4">
                   <h5 className="font-semibold text-gray-800 mb-3">Recommended Actions:</h5>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -1063,12 +1135,12 @@ For questions, contact: support@bizboosthub.com
                         onClick={() => takeAction(alert.id, action.id)}
                         disabled={isActionTaken(alert.id, action.id)}
                         className={`p-3 rounded-lg text-sm font-medium transition-colors ${
-                          isActionTaken(alert.id, action.id) 
+                          isActionTaken(alert.id, action.id)
                             ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                             : action.urgent
                               ? 'bg-blue-600 text-white hover:bg-blue-700'
                               : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-                        }`}
+                          }`}
                       >
                         {isActionTaken(alert.id, action.id) ? (
                           <span className="flex items-center gap-2">
@@ -1090,67 +1162,6 @@ For questions, contact: support@bizboosthub.com
           </div>
         )}
       </div>
-    </div>
-  );
-  const ChatbotWidget = () => (
-    <div className={`fixed bottom-6 right-6 transition-all duration-300 z-50 ${showChatbot ? 'w-80 h-96' : 'w-16 h-16'}`}>
-      {showChatbot ? (
-        <div className="bg-white rounded-lg shadow-2xl border flex flex-col h-full">
-          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex items-center justify-between">
-            <h4 className="font-semibold">AI Business Advisor</h4>
-            <button 
-              onClick={() => setShowChatbot(false)}
-              className="text-white hover:text-gray-200"
-            >
-              ×
-            </button>
-          </div>
-          <div className="flex-1 p-4 overflow-y-auto">
-            <div className="space-y-3">
-              {chatMessages.map((message) => (
-                <div key={message.id} className={`${message.isBot ? 'bg-gray-100' : 'bg-blue-100 ml-8'} rounded-lg p-3`}>
-                  <p className="text-sm">{message.text}</p>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="bg-gray-100 rounded-lg p-3">
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="p-4 border-t">
-            <div className="flex gap-2">
-              <input 
-                type="text" 
-                placeholder="Ask me anything..."
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1 px-3 py-2 border rounded-lg text-sm"
-              />
-              <button 
-                onClick={handleSendMessage}
-                disabled={!chatInput.trim() || isTyping}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
-              >
-                <Send className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <button
-          onClick={() => setShowChatbot(true)}
-          className="w-16 h-16 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-        >
-          <MessageCircle className="h-8 w-8" />
-        </button>
-      )}
     </div>
   );
 
@@ -1217,7 +1228,7 @@ For questions, contact: support@bizboosthub.com
                   activeTab === id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 <Icon className="h-4 w-4" />
                 {label}
@@ -1241,7 +1252,16 @@ For questions, contact: support@bizboosthub.com
       </main>
 
       {/* Chatbot Widget */}
-      <ChatbotWidget />
+      {/* Pass the necessary props to ChatbotWidget */}
+      <ChatbotWidget
+        showChatbot={showChatbot}
+        setShowChatbot={setShowChatbot}
+        chatMessages={chatMessages}
+        chatInput={chatInput}
+        setChatInput={setChatInput}
+        isTyping={isTyping}
+        handleSendMessage={handleSendMessage}
+      />
     </div>
   );
 };
