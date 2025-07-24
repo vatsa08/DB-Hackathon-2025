@@ -21,7 +21,7 @@ client = Client(Settings(persist_directory="chroma_db"))
 collection = client.get_or_create_collection(name="biz_docs")
 
 # Init Gemini model
-chat_model = ChatModel.from_pretrained("gemini-1.0-pro")  # or "gemini-1.5-pro-preview"
+chat_model = ChatModel.from_pretrained("chat-bison@001")  # or "gemini-1.5-pro-preview"
 chat = chat_model.start_chat()
 
 def retrieve_context(query):
