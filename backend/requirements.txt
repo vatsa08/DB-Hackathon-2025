@@ -12,4 +12,5 @@ unstructured
 duckdb
 onnxruntime
 google-cloud-aiplatform
+langchain
 
