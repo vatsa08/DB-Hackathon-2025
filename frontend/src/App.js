@@ -1166,16 +1166,17 @@ const BizBoostHub = () => {
       return scenarioSummary;
     } else {
       const responses = [
-        `Based on your ${currentBusiness.type.toLowerCase()} business data, I recommend focusing on cash flow optimization. Consider negotiating better payment terms with suppliers.`,
-        `${businessName}, your current cash position of ${currentBusiness.currentCash.toLocaleString()} is reasonable, but I suggest building a 3-month emergency fund of approximately ${(currentBusiness.monthlyRevenue * 0.8 * 3).toLocaleString()}.`,
-        `For your ${currentBusiness.type.toLowerCase()} business, I see opportunities to improve profit margins. Have you considered analyzing your highest-margin products/services?`,
-        `Looking at your monthly revenue of ${currentBusiness.monthlyRevenue.toLocaleString()}, there's potential for growth. I recommend exploring digital marketing strategies to increase customer acquisition.`,
-        `Given your strong profit growth and international expansion, **focus on strategically investing in key tech talent** to enhance your generative AI dashboard. Simultaneously, **scale your international sales and marketing efforts** in targeted regions, and **implement basic currency hedging strategies** to protect your growing foreign revenue from exchange rate fluctuations.`
+        // `Based on your ${currentBusiness.type.toLowerCase()} business data, I recommend focusing on cash flow optimization. Consider negotiating better payment terms with suppliers.`,
+        // `${businessName}, your current cash position of ${currentBusiness.currentCash.toLocaleString()} is reasonable, but I suggest building a 3-month emergency fund of approximately ${(currentBusiness.monthlyRevenue * 0.8 * 3).toLocaleString()}.`,
+        // `For your ${currentBusiness.type.toLowerCase()} business, I see opportunities to improve profit margins. Have you considered analyzing your highest-margin products/services?`,
+        // `Looking at your monthly revenue of ${currentBusiness.monthlyRevenue.toLocaleString()}, there's potential for growth. I recommend exploring digital marketing strategies to increase customer acquisition.`,
+        `Given your strong $profit growth and international expansion, **focus on strategically investing in key tech talent** to enhance your generative AI dashboard. Simultaneously, **scale your international sales and marketing efforts** in targeted regions, and **implement basic currency hedging strategies** to protect your growing foreign revenue from exchange rate fluctuations.`
       ];
 
       const selected = responses[Math.floor(Math.random() * responses.length)];
       const toReturn = selected
         .replace(/\*/g, '')                      // Remove asterisks
+        .replace(/\$/g, '₹')                     // Replace dollar with inr
         .split('.')                              // Split on periods
         .map(s => s.trim())                      // Trim each part
         .filter(s => s.length > 0)               // Remove empty strings
