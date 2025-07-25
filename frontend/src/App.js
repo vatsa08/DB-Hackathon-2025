@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, DollarSign, Target, FileText, Bell, MessageCircle, Search, Download, Award, AlertTriangle, CheckCircle, Clock, Users, Building, Zap, ChevronDown, ChevronUp, Send, Moon, Sun, Menu, X } from 'lucide-react';
+import { TrendingUp, Target, FileText, Bell, MessageCircle, Search, Download, Award, AlertTriangle, CheckCircle, Clock, Users, Building, Zap, ChevronDown, ChevronUp, Send, Moon, Sun, Menu, X, IndianRupee } from 'lucide-react';
 
 // --- Theme Provider Context ---
 const ThemeContext = React.createContext();
@@ -269,8 +269,8 @@ const DashboardView = memo(({
         {[
           {
             title: "Current Cash",
-            value: `$${currentBusiness.currentCash.toLocaleString()}`,
-            icon: DollarSign,
+            value: `₹${currentBusiness.currentCash.toLocaleString()}`,
+            icon: IndianRupee,
             bgColor: "bg-blue-100 dark:bg-blue-900/30",
             iconColor: "text-blue-600 dark:text-blue-400",
             change: "+5.2% from last month",
@@ -278,7 +278,7 @@ const DashboardView = memo(({
           },
           {
             title: "Monthly Revenue",
-            value: `$${currentBusiness.monthlyRevenue.toLocaleString()}`,
+            value: `₹${currentBusiness.monthlyRevenue.toLocaleString()}`,
             icon: TrendingUp,
             bgColor: "bg-green-100 dark:bg-green-900/30",
             iconColor: "text-green-600 dark:text-green-400",
